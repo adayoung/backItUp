@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<TriggerPackage>
+		<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>BackItUp</name>
+			<script></script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList />
+			<regexCodePropertyList />
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>BackItUp_CaptureStartCanary</name>
+				<script>enableTrigger("BackItUp_CaptureOrg")
+disableTrigger("BackItUp_CaptureScrollList")
+
+enableTrigger("BackItUp_Prompt")</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>You have no backitup.</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>3</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>BackItUp_CaptureOrg</name>
+				<script>if matches[2] == 'You have no backitup.' then return end
+
+if not backItUp.orgname then
+	backItUp.orgname = matches[2]
+	disableTrigger("BackItUp_CaptureOrg")
+	enableTrigger("BackItUp_CaptureScrollList")
+end</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^(.+)$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>BackItUp_CaptureScrollList</name>
+				<script>if isPrompt() then return end
+if matches[2] == backItUp.orgname then return end
+
+backItUp.scrolls = backItUp.scrolls or {}
+for item in string.gmatch(matches[2], "%a+") do
+	if item:len() &gt; 0 then
+		table.insert(backItUp.scrolls, item)
+	end
+end
+</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^(.+)$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>BackItUp_Prompt</name>
+				<script>disableTrigger("BackItUp_CaptureScrollList")
+disableTrigger("BackItUp_Prompt")
+disableTrigger("BackItUp_CaptureStartCanary")
+tempTimer(2, backItUp.nextScroll())</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>return isPrompt()</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>4</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>BackItUp_ScrollStartLine</name>
+				<script>disableTrigger("BackItUp_ScrollStartLine")
+
+enableTrigger("BackItUp_ScrollContent")
+enableTrigger("BackItUp_ScrollEndPrompt")</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^Composed by: (.+)</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>BackItUp_ScrollContent</name>
+				<script>if not isPrompt() then
+	--deleteLine()
+	if matches[2] then
+		backItUp.scrollContents[backItUp.thisScroll] = backItUp.scrollContents[backItUp.thisScroll] .. matches[2] .. "\n"
+	else
+		backItUp.scrollContents[backItUp.thisScroll] = backItUp.scrollContents[backItUp.thisScroll] .. "\n"
+	end
+end</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^(.+)$</string>
+					<string>^$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>BackItUp_ScrollEndPrompt</name>
+				<script>disableTrigger("BackItUp_ScrollContent")
+disableTrigger("BackItUp_ScrollEndPrompt")
+tempTimer(2, backItUp.nextScroll())</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>return isPrompt()</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>4</integer>
+				</regexCodePropertyList>
+			</Trigger>
+		</TriggerGroup>
+	</TriggerPackage>
+	<TimerPackage />
+	<AliasPackage>
+		<AliasGroup isActive="yes" isFolder="yes">
+			<name>BackItUp</name>
+			<script></script>
+			<command></command>
+			<packageName></packageName>
+			<regex></regex>
+			<Alias isActive="yes" isFolder="no">
+				<name>BackItUp_Init</name>
+				<script>backItUp.init(matches[2])</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^backup (.+)$</regex>
+			</Alias>
+		</AliasGroup>
+	</AliasPackage>
+	<ActionPackage />
+	<ScriptPackage>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>BackItUp</name>
+			<packageName></packageName>
+			<script></script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>BackItUp</name>
+				<packageName></packageName>
+				<script>backItUp = {}
+
+backItUp.init = function(which)
+	backItUp.orgname = nil
+	backItUp.scrolls = {}
+	backItUp.scrollContents = {}
+	
+	backItUp.which = which
+  enableTrigger("BackItUp_CaptureStartCanary")
+  send("TOUCH BackItUp|" .. which)
+end
+
+backItUp.nextScroll = function()
+	if #backItUp.scrolls &gt; 0 then
+		enableTrigger("BackItUp_ScrollStartLine")
+		backItUp.thisScroll = table.remove(backItUp.scrolls, 1)
+		backItUp.scrollContents[backItUp.thisScroll] = ""
+		send(backItUp.which .. " " .. backItUp.thisScroll)
+	else
+		if not io.exists(getMudletHomeDir() .. "/backItUp") then
+			lfs.mkdir(getMudletHomeDir() .. "/backItUp")
+		end
+		
+		local orgFolderName = db:safe_name(backItUp.orgname)
+		if not io.exists(getMudletHomeDir() .. "/backItUp/" .. orgFolderName) then
+			lfs.mkdir(getMudletHomeDir() .. "/backItUp/" .. orgFolderName)
+		end
+		
+		orgFolderName = getMudletHomeDir() .. "/backItUp/" .. orgFolderName
+		for scroll, contents in pairs(backItUp.scrollContents) do
+			local scrollFile = db:safe_name(scroll)
+			local scrollFHandle = io.open(orgFolderName .. "/" .. scrollFile, 'w')
+			if scrollFHandle then
+  			scrollFHandle:write(contents)
+  			scrollFHandle:flush()
+  			scrollFHandle:close()
+			end
+		end
+		
+		backItUp.orgname = nil
+		backItUp.scrolls = {}
+		backItUp.scrollContents = {}
+		cecho("\n&lt;orange,DarkSlateGrey&gt;All done! We've slurped everything real good. Yum yum yum!\n")
+		cecho("&lt;orange,DarkSlateGrey&gt;The stuff was saved here: " .. orgFolderName)
+	end
+end</script>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+	</ScriptPackage>
+	<KeyPackage />
+	<VariablePackage>
+		<HiddenVariables />
+	</VariablePackage>
+</MudletPackage>
