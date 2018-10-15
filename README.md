@@ -29,3 +29,6 @@ Hi! This is a [Mudlet](https://mudlet.org/) package lets you backup the super im
 It's quite simple really! Albeit spammy but I'm sure you wouldn't mind it for a copy of everything, EVERYTHING!
 
 If you don't know what Achaea is, you should probably come over here at https://achaea.com/ and make a character and play with us!
+
+P.S. Credits/Gold donations welcome!  
+P.P.S. Help me become an Elder Dragon too!@ -flails-
