@@ -23,7 +23,7 @@ Hi! This is a [Mudlet](https://mudlet.org/) package lets you backup the super im
 
 1. You'll want to hit Alt-O to open the package manager
 2. Click on the little 'Install' button
-3. Locate the [xml file](https://github.com/adayoung/backItUp/master/backItUp.xml) you've downloaded from here
+3. Locate the [xml file](https://github.com/adayoung/backItUp/blob/master/backItUp.xml) you've downloaded from here
 4. Click Open! That should be it :grin:
 
 It's quite simple really! Albeit spammy but I'm sure you wouldn't mind it for a copy of everything, EVERYTHING!
