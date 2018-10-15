@@ -4,20 +4,20 @@ Hi! This is a [Mudlet](https://mudlet.org/) package lets you backup the super im
 
 ## Backup CITY Scrolls
 
-> backup chelp
+> `backup chelp`
 
 ## Backup ORDER Scrolls
 
-> backup ohelp
+> `backup ohelp`
 
 ## Backup HOUSE Scrolls
 
-> backup hhelp
+> `backup hhelp`
 
 ## Backup a Clan's Scrolls
 
-> CLAN SWITCH <clanname>  
-> backup clhelp
+> `CLAN SWITCH <clanname>`  
+> `backup clhelp`
 
 ### How to import
 
