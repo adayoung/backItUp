@@ -225,6 +225,7 @@ tempTimer(0.3, backItUp.nextScroll)</script>
 				<name>BackItUp</name>
 				<packageName></packageName>
 				<script>backItUp = {}
+backItUp.CommandSeparator = "|" -- FIXME: Change this whatever you have on CONFIG CommandSeparator
 
 backItUp.init = function(which)
 	backItUp.orgname = nil
@@ -234,7 +235,7 @@ backItUp.init = function(which)
 	
 	backItUp.which = which
   enableTrigger("BackItUp_CaptureStartCanary")
-  send("TOUCH BackItUp|" .. which)
+  send("TOUCH BackItUp" .. backItUp.CommandSeparator .. which)
 end
 
 backItUp.nextScroll = function()
