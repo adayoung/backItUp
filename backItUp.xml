@@ -210,7 +210,7 @@ tempTimer(2, backItUp.nextScroll())</script>
 				<script>backItUp.init(matches[2])</script>
 				<command></command>
 				<packageName></packageName>
-				<regex>^backup (.+)$</regex>
+				<regex>^backup (\w+)$</regex>
 			</Alias>
 		</AliasGroup>
 	</AliasPackage>
