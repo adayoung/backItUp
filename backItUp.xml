@@ -252,6 +252,7 @@ backItUp.nextScroll = function()
 end
 
 backItUp.saveScrolls = function()
+	cecho("&lt;orange,DarkSlateGrey&gt;Saving ...\n")
 	local errors = {}
 	if not io.exists(getMudletHomeDir() .. "/backItUp") then
 		lfs.mkdir(getMudletHomeDir() .. "/backItUp")

@@ -26,7 +26,14 @@ Hi! This is a [Mudlet](https://mudlet.org/) package lets you backup the super im
 3. Locate the [xml file](https://github.com/adayoung/backItUp/blob/master/backItUp.xml) you've downloaded from here
 4. Click Open! That should be it :grin:
 
-It's quite simple really! Albeit spammy but I'm sure you wouldn't mind it for a copy of everything, EVERYTHING!
+### How to upgrade
+
+1. You'll want to hit Alt-O to open the package manager
+2. Select backItUp from the list
+3. Click the 'Uninstall' button
+4. Start again from [How to import](#how-to-import)
+
+It's quite simple really! A little spammy but I'm sure you wouldn't mind it for a copy of everything, EVERYTHING!
 
 If you don't know what Achaea is, you should probably come over here at https://achaea.com/ and make a character and play with us!
 
