@@ -25,6 +25,7 @@ Hi! This is a [Mudlet](https://mudlet.org/) package lets you backup the super im
 2. Click on the little 'Install' button
 3. Locate the [xml file](https://github.com/adayoung/backItUp/blob/master/backItUp.xml) you've downloaded from here
 4. Click Open! That should be it :grin:
+5. You'll want to look at Scripts > BackItUp and ensure backItUp.CommandSeparator is what it needs to be. The default is '|' which is Achaea's default as well.
 
 ### How to upgrade
 
