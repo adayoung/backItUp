@@ -103,7 +103,7 @@ disableTrigger("BackItUp_CaptureStartCanary")
 backItUp.scrollsTotal = #backItUp.scrolls
 cecho("\n&lt;orange,DarkSlateGrey&gt;Found " .. backItUp.scrollsTotal .. " scrolls for " .. backItUp.orgname .. "\n")
 cecho("\n&lt;orange,DarkSlateGrey&gt;Starting backup... \n")
-tempTimer(2, backItUp.nextScroll())</script>
+tempTimer(0.3, backItUp.nextScroll)</script>
 				<triggerType>0</triggerType>
 				<conditonLineDelta>0</conditonLineDelta>
 				<mStayOpen>0</mStayOpen>
@@ -177,7 +177,7 @@ end</script>
 				<name>BackItUp_ScrollEndPrompt</name>
 				<script>disableTrigger("BackItUp_ScrollContent")
 disableTrigger("BackItUp_ScrollEndPrompt")
-tempTimer(2, backItUp.nextScroll())</script>
+tempTimer(0.3, backItUp.nextScroll)</script>
 				<triggerType>0</triggerType>
 				<conditonLineDelta>0</conditonLineDelta>
 				<mStayOpen>0</mStayOpen>
