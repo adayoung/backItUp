@@ -240,29 +240,46 @@ backItUp.nextScroll = function()
 		backItUp.scrollContents[backItUp.thisScroll] = ""
 		send(backItUp.which .. " " .. backItUp.thisScroll)
 	else
-		if not io.exists(getMudletHomeDir() .. "/backItUp") then
-			lfs.mkdir(getMudletHomeDir() .. "/backItUp")
+		backItUp.saveScrolls()
+	end
+end
+
+backItUp.saveScrolls = function()
+	local errors = {}
+	if not io.exists(getMudletHomeDir() .. "/backItUp") then
+		lfs.mkdir(getMudletHomeDir() .. "/backItUp")
+	end
+
+	local orgFolderName = db:safe_name(backItUp.orgname)
+	orgFolderName = getMudletHomeDir() .. "/backItUp/" .. orgFolderName
+	if not io.exists(orgFolderName) then
+		local x = lfs.mkdir(orgFolderName)
+		if not x then
+			table.insert(errors, "&lt;red,DarkSlateGrey&gt;Eep eep there was an error with creating this folder: " .. orgFolderName .. "\n")
 		end
-		
-		local orgFolderName = db:safe_name(backItUp.orgname)
-		if not io.exists(getMudletHomeDir() .. "/backItUp/" .. orgFolderName) then
-			lfs.mkdir(getMudletHomeDir() .. "/backItUp/" .. orgFolderName)
+	end
+
+	for scroll, contents in pairs(backItUp.scrollContents) do
+		local scrollFile = db:safe_name(scroll) .. ".txt"
+		local scrollFHandle = io.open(orgFolderName .. "/" .. scrollFile, 'w')
+		if scrollFHandle then
+			scrollFHandle:write(contents)
+			scrollFHandle:flush()
+			scrollFHandle:close()
+		else
+			table.insert(errors, "&lt;red,DarkSlateGrey&gt;Eep eep there was an error with creating this file: " .. orgFolderName .. "/" .. scrollFile .. "\n")
 		end
-		
-		orgFolderName = getMudletHomeDir() .. "/backItUp/" .. orgFolderName
-		for scroll, contents in pairs(backItUp.scrollContents) do
-			local scrollFile = db:safe_name(scroll)
-			local scrollFHandle = io.open(orgFolderName .. "/" .. scrollFile, 'w')
-			if scrollFHandle then
-  			scrollFHandle:write(contents)
-  			scrollFHandle:flush()
-  			scrollFHandle:close()
-			end
+	end
+
+	backItUp.orgname = nil
+	backItUp.scrolls = {}
+	backItUp.scrollContents = {}
+	if #errors &gt; 0 then
+		echo("\n")
+		for _, err in ipairs(errors) do
+			cecho(err)
 		end
-		
-		backItUp.orgname = nil
-		backItUp.scrolls = {}
-		backItUp.scrollContents = {}
+	else
 		cecho("\n&lt;orange,DarkSlateGrey&gt;All done! We've slurped everything real good. Yum yum yum!\n")
 		cecho("&lt;orange,DarkSlateGrey&gt;The stuff was saved here: " .. orgFolderName)
 	end
