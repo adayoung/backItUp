@@ -100,6 +100,9 @@ end
 				<script>disableTrigger("BackItUp_CaptureScrollList")
 disableTrigger("BackItUp_Prompt")
 disableTrigger("BackItUp_CaptureStartCanary")
+backItUp.scrollsTotal = #backItUp.scrolls
+cecho("\n&lt;orange,DarkSlateGrey&gt;Found " .. backItUp.scrollsTotal .. " scrolls for " .. backItUp.orgname .. "\n")
+cecho("\n&lt;orange,DarkSlateGrey&gt;Starting backup... \n")
 tempTimer(2, backItUp.nextScroll())</script>
 				<triggerType>0</triggerType>
 				<conditonLineDelta>0</conditonLineDelta>
@@ -144,7 +147,7 @@ enableTrigger("BackItUp_ScrollEndPrompt")</script>
 			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>BackItUp_ScrollContent</name>
 				<script>if not isPrompt() then
-	--deleteLine()
+	deleteLine()
 	if matches[2] then
 		backItUp.scrollContents[backItUp.thisScroll] = backItUp.scrollContents[backItUp.thisScroll] .. matches[2] .. "\n"
 	else
@@ -225,6 +228,7 @@ tempTimer(2, backItUp.nextScroll())</script>
 
 backItUp.init = function(which)
 	backItUp.orgname = nil
+	backItUp.scrollsTotal = 0
 	backItUp.scrolls = {}
 	backItUp.scrollContents = {}
 	
@@ -237,9 +241,12 @@ backItUp.nextScroll = function()
 	if #backItUp.scrolls &gt; 0 then
 		enableTrigger("BackItUp_ScrollStartLine")
 		backItUp.thisScroll = table.remove(backItUp.scrolls, 1)
+		cecho("\n&lt;orange,DarkSlateGrey&gt;Collecting " .. (backItUp.scrollsTotal - #backItUp.scrolls) .. " out of " .. backItUp.scrollsTotal .. " scrolls...\n")
+
 		backItUp.scrollContents[backItUp.thisScroll] = ""
 		send(backItUp.which .. " " .. backItUp.thisScroll)
 	else
+
 		backItUp.saveScrolls()
 	end
 end
