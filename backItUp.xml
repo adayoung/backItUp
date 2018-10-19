@@ -126,6 +126,7 @@ tempTimer(0.3, backItUp.nextScroll)</script>
 				<script>disableTrigger("BackItUp_ScrollStartLine")
 
 enableTrigger("BackItUp_ScrollContent")
+enableTrigger("BackItUp_ScrollMorePrompt")
 enableTrigger("BackItUp_ScrollEndPrompt")</script>
 				<triggerType>0</triggerType>
 				<conditonLineDelta>0</conditonLineDelta>
@@ -139,9 +140,11 @@ enableTrigger("BackItUp_ScrollEndPrompt")</script>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
 					<string>^Composed by: (.+)</string>
+					<string>[File continued via MORE]</string>
 				</regexCodeList>
 				<regexCodePropertyList>
 					<integer>1</integer>
+					<integer>3</integer>
 				</regexCodePropertyList>
 			</Trigger>
 			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -149,6 +152,7 @@ enableTrigger("BackItUp_ScrollEndPrompt")</script>
 				<script>if not isPrompt() then
 	deleteLine()
 	if matches[2] then
+		-- TODO: skip adding the MORE prompt and its preamble
 		backItUp.scrollContents[backItUp.thisScroll] = backItUp.scrollContents[backItUp.thisScroll] .. matches[2] .. "\n"
 	else
 		backItUp.scrollContents[backItUp.thisScroll] = backItUp.scrollContents[backItUp.thisScroll] .. "\n"
@@ -174,8 +178,29 @@ end</script>
 				</regexCodePropertyList>
 			</Trigger>
 			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>BackItUp_ScrollMorePrompt</name>
+				<script>backItUp.wantsMore = true</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^\[Type MORE if you wish to continue reading. \(\d+% shown\)\]$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>BackItUp_ScrollEndPrompt</name>
-				<script>disableTrigger("BackItUp_ScrollContent")
+				<script>disableTrigger("BackItUp_ScrollMorePrompt")
+disableTrigger("BackItUp_ScrollContent")
 disableTrigger("BackItUp_ScrollEndPrompt")
 tempTimer(0.3, backItUp.nextScroll)</script>
 				<triggerType>0</triggerType>
@@ -232,6 +257,7 @@ backItUp.init = function(which)
 	backItUp.scrollsTotal = 0
 	backItUp.scrolls = {}
 	backItUp.scrollContents = {}
+	backItUp.wantsMore = false
 	
 	backItUp.which = which
   enableTrigger("BackItUp_CaptureStartCanary")
@@ -241,11 +267,17 @@ end
 backItUp.nextScroll = function()
 	if #backItUp.scrolls &gt; 0 then
 		enableTrigger("BackItUp_ScrollStartLine")
-		backItUp.thisScroll = table.remove(backItUp.scrolls, 1)
-		cecho("\n&lt;orange,DarkSlateGrey&gt;Collecting " .. (backItUp.scrollsTotal - #backItUp.scrolls) .. " out of " .. backItUp.scrollsTotal .. " scrolls...\n")
+		if backItUp.wantsMore then
+			cecho("\n&lt;orange,DarkSlateGrey&gt;Collecting MOAR!\n")
+			backItUp.wantsMore = false
+			send("MORE")
+		else
+			backItUp.thisScroll = table.remove(backItUp.scrolls, 1)
+			cecho("\n&lt;orange,DarkSlateGrey&gt;Collecting " .. (backItUp.scrollsTotal - #backItUp.scrolls) .. " out of " .. backItUp.scrollsTotal .. " scrolls...\n")
 
-		backItUp.scrollContents[backItUp.thisScroll] = ""
-		send(backItUp.which .. " " .. backItUp.thisScroll)
+			backItUp.scrollContents[backItUp.thisScroll] = ""
+			send(backItUp.which .. " " .. backItUp.thisScroll)
+		end
 	else
 
 		backItUp.saveScrolls()
