@@ -155,7 +155,7 @@ enableTrigger("BackItUp_ScrollEndPrompt")</script>
 		local isTypeMore = string.find(matches[2], "%[Type MORE if you wish to continue reading. %(%d+%% shown%)%]")
 		local isFileContinued = string.find(matches[2], "%[File continued via MORE%]")
 		if isTypeMore then
-			backItUp.scrollContents[backItUp.thisScroll] = backItUp.scrollContents[backItUp.thisScroll] .. "\n"
+			return
 		elseif isFileContinued then
 			return
 		else
