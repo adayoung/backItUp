@@ -149,15 +149,14 @@ enableTrigger("BackItUp_ScrollEndPrompt")</script>
 			</Trigger>
 			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>BackItUp_ScrollContent</name>
-				<script>local isTypeMore = string.find(matches[2], "%[Type MORE if you wish to continue reading. %(%d+%% shown%)%]")
-local isFileContinued = string.find(matches[2], "%[File continued via MORE%]")
-
-if not isPrompt() then
+				<script>if not isPrompt() then
 	deleteLine()
 	if matches[2] then
-		if isTypeMore == 1 then
+		local isTypeMore = string.find(matches[2], "%[Type MORE if you wish to continue reading. %(%d+%% shown%)%]")
+		local isFileContinued = string.find(matches[2], "%[File continued via MORE%]")
+		if isTypeMore then
 			backItUp.scrollContents[backItUp.thisScroll] = backItUp.scrollContents[backItUp.thisScroll] .. "\n"
-		elseif isFileContinued == 1 then
+		elseif isFileContinued then
 			return
 		else
 			backItUp.scrollContents[backItUp.thisScroll] = backItUp.scrollContents[backItUp.thisScroll] .. matches[2] .. "\n"
