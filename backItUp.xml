@@ -34,7 +34,7 @@ enableTrigger("BackItUp_Prompt")</script>
 				<colorTriggerFgColor>#000000</colorTriggerFgColor>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
-					<string>You have no backitup.</string>
+					<string>----- BACKITUP! -----</string>
 				</regexCodeList>
 				<regexCodePropertyList>
 					<integer>3</integer>
@@ -42,7 +42,7 @@ enableTrigger("BackItUp_Prompt")</script>
 			</Trigger>
 			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>BackItUp_CaptureOrg</name>
-				<script>if matches[2] == 'You have no backitup.' then return end
+				<script>if matches[2] == '----- BACKITUP! -----' then return end
 
 if not backItUp.orgname then
 	backItUp.orgname = matches[2]
@@ -142,9 +142,11 @@ enableTrigger("BackItUp_ScrollEndPrompt")</script>
 					<string>^Composed by: (.+)</string>
 					<string>[File continued via MORE]</string>
 					<string>There appears to be no help scroll by that name.</string>
+					<string>----- BACKITUP-SCROLL! -----</string>
 				</regexCodeList>
 				<regexCodePropertyList>
 					<integer>1</integer>
+					<integer>3</integer>
 					<integer>3</integer>
 					<integer>3</integer>
 				</regexCodePropertyList>
@@ -156,7 +158,8 @@ enableTrigger("BackItUp_ScrollEndPrompt")</script>
 	if matches[2] then
 		local isTypeMore = string.find(matches[2], "%[Type MORE if you wish to continue reading. %(%d+%% shown%)%]")
 		local isFileContinued = string.find(matches[2], "%[File continued via MORE%]")
-		if isTypeMore or isFileContinued then -- skip MORE!
+		local isPreamble = matches[2] == "----- BACKITUP-SCROLL! -----"
+		if isTypeMore or isFileContinued or isPreamble then -- skip MORE!
 			return
 		else
 			backItUp.scrollContents[backItUp.thisScroll] = backItUp.scrollContents[backItUp.thisScroll] .. matches[2] .. "\n"
@@ -268,7 +271,7 @@ backItUp.init = function(which)
 	
 	backItUp.which = which
   enableTrigger("BackItUp_CaptureStartCanary")
-  send("TOUCH BackItUp" .. backItUp.CommandSeparator .. which)
+  send("ECHO ----- BACKITUP! -----" .. backItUp.CommandSeparator .. which)
 end
 
 backItUp.nextScroll = function()
@@ -283,7 +286,7 @@ backItUp.nextScroll = function()
 			cecho("\n&lt;orange,DarkSlateGrey&gt;Collecting " .. (backItUp.scrollsTotal - #backItUp.scrolls) .. " out of " .. backItUp.scrollsTotal .. " scrolls...\n")
 
 			backItUp.scrollContents[backItUp.thisScroll] = ""
-			send(backItUp.which .. " " .. backItUp.thisScroll)
+			send("ECHO ----- BACKITUP-SCROLL! -----" .. backItUp.CommandSeparator .. backItUp.which .. " " .. backItUp.thisScroll)
 		end
 	else
 
@@ -309,13 +312,15 @@ backItUp.saveScrolls = function()
 
 	for scroll, contents in pairs(backItUp.scrollContents) do
 		local scrollFile = db:safe_name(scroll) .. ".txt"
-		local scrollFHandle = io.open(orgFolderName .. "/" .. scrollFile, 'w')
-		if scrollFHandle then
-			scrollFHandle:write(contents)
-			scrollFHandle:flush()
-			scrollFHandle:close()
-		else
-			table.insert(errors, "&lt;red,DarkSlateGrey&gt;Eep eep there was an error with creating this file: " .. orgFolderName .. "/" .. scrollFile .. "\n")
+		if contents ~= "There appears to be no help scroll by that name." then
+			local scrollFHandle = io.open(orgFolderName .. "/" .. scrollFile, 'w')
+			if scrollFHandle then
+				scrollFHandle:write(contents)
+				scrollFHandle:flush()
+				scrollFHandle:close()
+			else
+				table.insert(errors, "&lt;red,DarkSlateGrey&gt;Eep eep there was an error with creating this file: " .. orgFolderName .. "/" .. scrollFile .. "\n")
+			end
 		end
 	end
 
